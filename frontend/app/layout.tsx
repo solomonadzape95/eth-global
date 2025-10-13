@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
+import localFont from 'next/font/local'
+ 
+const myFont = localFont({
+  src: '../fonts/Satoshi-Regular.woff',
+})
 
 export const metadata: Metadata = {
   title: "ethglobal-project",
@@ -14,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className={`antialiased ${myFont.className}`}>
         <Providers>{children}</Providers>
       </body>
     </html>
