@@ -46,6 +46,9 @@
 .ball-bounce{
   animation: bounce 5s ease-in-out infinite
 }
+.marquee {
+  animation: marquee 15s linear infinite
+}
 
 @layer base {
   * {
@@ -65,4 +68,12 @@
   to {
     transform: translateY(0);
   }
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+ to {
+    transform: translateX(-100%);
+ }
 }
