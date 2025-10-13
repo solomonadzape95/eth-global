@@ -43,6 +43,9 @@
     --radius: 1rem;
   }
 }
+.ball-bounce{
+  animation: bounce 5s ease-in-out infinite
+}
 
 @layer base {
   * {
@@ -50,5 +53,16 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5%);
+  }
+  to {
+    transform: translateY(0);
   }
 }

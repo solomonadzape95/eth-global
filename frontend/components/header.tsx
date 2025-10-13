@@ -52,7 +52,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 inset-x-0 z-40">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 py-2 lg:py-8">
+      <div className="mx-auto max-w-6xl px-6 lg:px-0 py-2 lg:py-8">
         <div className="h-16 flex items-center justify-between">
 
           {/* Logo */}
