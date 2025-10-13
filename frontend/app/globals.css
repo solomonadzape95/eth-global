@@ -8,8 +8,17 @@
     --background: 150 12% 3.5%; /* near-black with subtle green tint */
     --foreground: 0 0% 96%;
 
-    --card: 150 10% 6%;
+    --card: 0 0% 8%;
     --card-foreground: 0 0% 96%;
+    --primary-glass-gradient: 
+      linear-gradient(
+        to bottom,
+        hsl(var(--primary)/0.48) 0%,
+        hsl(var(--primary)/0.56) 100%
+      );
+    --primary-glass-gradient-shadow: 0 8px 28px rgba(16,185,129,0.25);
+    --primary-glass-gradient-hover-from: hsl(var(--primary)/0.39);
+    --primary-glass-gradient-hover-to: hsl(var(--primary)/0.32);
 
     --popover: 150 10% 6%;
     --popover-foreground: 0 0% 96%;

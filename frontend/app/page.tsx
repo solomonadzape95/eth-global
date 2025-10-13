@@ -6,13 +6,15 @@ import { Shield, Lock, Key } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ParallaxBall from "@/components/parallax-ball";
+import Process from "@/components/process";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center p-4 lg:p-8 overflow-hidden relative">
       <Header/>
-    <ParallaxBall/>
+    {[...Array(4)].map((c,i) => <ParallaxBall ballNum={i+1 as 1 | 2| 3|4}/>)}
       <Hero/>
+      <Process/>
     </div>
   );
 }
