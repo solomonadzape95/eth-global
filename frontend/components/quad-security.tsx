@@ -17,7 +17,7 @@ export default function QuadSecurity({ className = "", rounded = "rounded-2xl", 
   React.useEffect(() => {
     const id = setInterval(() => setIndex((i) => (i + 1) % icons.length), intervalMs);
     return () => clearInterval(id);
-  }, [intervalMs]);
+  }, [intervalMs,icons.length]);
 
   return (
     <Card

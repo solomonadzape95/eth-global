@@ -17,7 +17,7 @@ export default function Home() {
   <div className="p-0 overflow-hidden">
     <div className="min-h-screen flex flex-col p-4 lg:p-8 items-center  relative">
       <Header/>
-    {[...Array(3)].map((c,i) => <ParallaxBall ballNum={i+1 as 1 | 2| 3|4}/>)}
+    {[...Array(3)].map((c,i) => <ParallaxBall key={i} ballNum={i+1 as 1 | 2| 3|4}/>)}
       <Hero/>
       <Offer/>
       <Process/>
