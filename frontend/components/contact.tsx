@@ -33,7 +33,7 @@ export default function Contact() {
         </div>
 
         {/* Right: Form */}
-        <Card className="p-5 lg:p-6 border-white/10 bg-black/40 backdrop-blur-md">
+        <Card className="p-5 lg:p-6 border-white/10 backdrop-blur-md">
           <form className="grid grid-cols-1 gap-5">
             <FormField label="Full Name">
               <input className={inputClass} placeholder="John Doe" />
@@ -59,7 +59,7 @@ export default function Contact() {
 
 function InfoCard({ icon, title, lines }: { icon: React.ReactNode; title: string; lines: string[] }) {
   return (
-    <Card className="p-5 lg:p-6 flex items-start gap-4 border-white/10 bg-black/40 backdrop-blur-md">
+    <Card className="p-5 lg:p-6 flex items-start gap-4 border-white/10 backdrop-blur-md">
       <span className="w-12 h-12 rounded-xl grid place-items-center bg-white/8 border border-white/10 text-white/90">
         {icon}
       </span>
