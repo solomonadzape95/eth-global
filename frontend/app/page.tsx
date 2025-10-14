@@ -8,6 +8,7 @@ import Link from "next/link";
 import ParallaxBall from "@/components/parallax-ball";
 import Process from "@/components/process";
 import Contact from "@/components/contact";
+import FAQ from "@/components/faq";
 import Offer from "@/components/offer";
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
       <Hero/>
       <Offer/>
       <Process/>
+      <FAQ/>
       <Contact/>
     </div>
   );
