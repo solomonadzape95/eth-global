@@ -33,7 +33,7 @@ const ITEMS: OfferItem[] = [
     key: "individuals-main",
     badge: "For Individuals",
         title: "Take Control of Your Identity",
-        display: <StackedNotification app="GitHub" message="Verified with Keystone" subtext="You're good to go. Access granted to private repos." />, 
+        display: <StackedNotification app="GitHub" message="Verified with Keystone" subtext="You're good to go. Student status verified." />, 
     blurb:
       "Stop uploading your sensitive documents to dozens of sites. Our privacy-first platform ensures you share a proof, not your personal data.",
     icon: <Users className="w-5 h-5" />,classname: "col-span-3 row-span-1",
@@ -82,12 +82,22 @@ function OfferCard({ item }: { item: OfferItem }) {
   return (
     <Card
       className={[
-        "p-5 lg:p-6 border-white/10 backdrop-blur-md",
+        "p-5 lg:p-6 border-white/10 backdrop-blur-md relative",
         "rounded-2xl shadow-[0_8px_28px_rgba(0,0,0,0.35)]",
         "h-full", 
-        "flex flex-col", 
+        "flex flex-col overflow-hidden", 
       ].join(" ")}
     >
+         <div
+                className="absolute rounded-full pointer-events-none w-[500px] h-[500px] right-[10%] translate-x-1/2 -bottom-[160px] z-10"
+                style={{
+                    background:
+                        "radial-gradient(circle at center, hsl(var(--primary)/0.13) 0%, transparent 70%, transparent 100%)",
+                    mixBlendMode: "lighten",
+                    filter: "blur(12px)",
+                    opacity: 0.9,
+                }}
+            />
       <div className="flex items-center gap-2 text-white/70">
         <span className="inline-flex items-center gap-2 text-xs text-primary tracking-wide uppercase">
           {item.icon}
