@@ -62,7 +62,7 @@
   animation: pulse-scale 4s linear infinite
 }
 .rotate {
-  animation: rotate .5s linear infinite
+  animation: rotate 2s linear infinite;
 }
 @layer base {
   * {

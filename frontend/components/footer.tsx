@@ -3,6 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Github, Instagram, Linkedin, X, Youtube } from "lucide-react";
+import Image from "next/image";
+import logo from "@/assets/keystone-logo.svg"
 
 export default function Footer() {
   return (
@@ -33,8 +35,16 @@ export default function Footer() {
           {/* Brand */}
           <div className="space-y-3">
             <div className="inline-flex items-center gap-2">
-              <span className="w-8 h-8 rounded-[7px] border border-white/10 bg-gradient-to-b from-[hsl(var(--primary)/0.88)] to-[hsl(var(--primary)/0.76)]" />
-               <span className="text-lg font-semibold">Keystone</span>
+            <span
+              className={cn(
+                "w-9 h-9 rounded-[7px] border border-white/10 p-1",
+                "bg-gradient-to-b from-[hsl(var(--primary)/0.88)] to-[hsl(var(--primary)/0.76)]",
+                "backdrop-blur-md shadow-[0_10px_30px_rgba(16,185,129,0.25)]",
+                "grid place-items-center text-sm font-semibold text-white"
+              )}
+            >
+              <Image src={logo} width={100} height={100} alt="logo"/>
+            </span><span className="text-lg font-semibold">Keystone</span>
             </div>
             <p className="text-sm text-white/70 max-w-xs">
               Making identites global.

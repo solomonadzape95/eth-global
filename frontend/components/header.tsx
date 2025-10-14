@@ -3,6 +3,8 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/keystone-logo.svg"
+import Image from "next/image";
 
 const NAV_ITEMS = [
   { label: "How it works", href: "#how-it-works" },
@@ -52,21 +54,26 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 inset-x-0 z-40">
-      <div className="mx-auto max-w-6xl px-6 lg:px-0 py-2 lg:py-8">
+      <div
+        className={cn(
+          "mx-auto max-w-6xl px-6 lg:px-0 py-2 lg:py-8",
+          "md:bg-transparent md:backdrop-blur-none",
+          "bg-black/10 backdrop-blur-lg"
+        )}
+      >
         <div className="h-16 flex items-center justify-between">
 
           {/* Logo */}
           <a href="#home" className="flex items-center gap-3">
             <span
               className={cn(
-                "w-9 h-9 rounded-[7px] border border-white/10",
+                "w-9 h-9 rounded-[7px] border border-white/10 p-1",
                 "bg-gradient-to-b from-[hsl(var(--primary)/0.88)] to-[hsl(var(--primary)/0.76)]",
                 "backdrop-blur-md shadow-[0_10px_30px_rgba(16,185,129,0.25)]",
                 "grid place-items-center text-sm font-semibold text-white"
               )}
             >
-              {/* simple placeholder mark */}
-              <span className="w-3.5 h-3.5 rounded-[6px] bg-black/30 block" />
+              <Image src={logo} width={100} height={100} alt="logo"/>
             </span>
           </a>
 
@@ -100,11 +107,10 @@ export default function Header() {
             <div className="hidden sm:block">
               <Button variant="glassLight" size="lg">Create Your ID</Button>
             </div>
-            {/* Hamburger always present on mobile, animates to X and triggers mobile nav */}
             <button
               aria-label={open ? "Close menu" : "Open menu"}
               className={cn(
-                "md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl backdrop-blur-md text-white/80 transition-colors duration-300 focus:outline-none z-50"
+                "md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl bg-transparent text-white/80 transition-colors duration-300 focus:outline-none z-50"
               )}
               onClick={() => setOpen((v) => !v)}
             >
@@ -147,16 +153,16 @@ export default function Header() {
           {/* Header section (Logo, only on mobile panel now, no hamburger) */}
           <div className="flex items-center justify-between">
             <a href="#home" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-              <span
-                className={cn(
-                  "w-9 h-9 rounded-[7px] border border-white/10",
-                  "bg-gradient-to-b from-[hsl(var(--primary)/0.88)] to-[hsl(var(--primary)/0.76)]",
-                  "backdrop-blur-md shadow-[0_10px_30px_rgba(16,185,129,0.25)]",
-                  "grid place-items-center text-sm font-semibold text-white"
-                )}
-              >
-                <span className="w-3.5 h-3.5 rounded-[6px] bg-black/30 block" />
-              </span>
+            <span
+              className={cn(
+                "w-9 h-9 rounded-[7px] border border-white/10 p-1",
+                "bg-gradient-to-b from-[hsl(var(--primary)/0.88)] to-[hsl(var(--primary)/0.76)]",
+                "backdrop-blur-md shadow-[0_10px_30px_rgba(16,185,129,0.25)]",
+                "grid place-items-center text-sm font-semibold text-white"
+              )}
+            >
+              <Image src={logo} width={100} height={100} alt="logo"/>
+            </span>
             </a>
             {/* Hamburger is only in the topbar, removed duplication here */}
             <span className="w-10 h-10" />
