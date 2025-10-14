@@ -3,44 +3,53 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Code2, ShieldCheck, Users } from "lucide-react";
+import StackedNotification from "@/components/stacked-notification";
+import DevMarquee from "@/components/dev-marquee";
+import { ReactNode } from "react";
+import QuadSecurity from "./quad-security";
 
 type OfferItem = {
   key: string;
   title: string;
   blurb: string;
   badge: string;
+  display: ReactNode;
   icon: React.ReactNode;
   classname: string;
 };
 
 const ITEMS: OfferItem[] = [
+    {
+        key: "business-main",
+        badge: "For Businesses",
+        display: <QuadSecurity className="w-full h-full" />,
+        title: "Reduce Fraud & Build Trust",
+        blurb:
+          "Lower your risk by accepting users who have already been verified by a licensed provider. Save time and operational costs on KYC and compliance.",
+        icon: <ShieldCheck className="w-5 h-5" />,
+        classname: "col-span-3 md:col-span-2 row-span-2",
+      },
   {
     key: "individuals-main",
     badge: "For Individuals",
     title: "Take Control of Your Identity",
+    display: <StackedNotification app="GitHub" message="Verified with Locus" subtext="You're good to go. Access granted to private repos." />,
     blurb:
       "Stop uploading your sensitive documents to dozens of sites. Our privacy-first platform ensures you share a proof, not your personal data.",
-    icon: <Users className="w-5 h-5" />,
-    classname: "col-span-3 md:col-span-2 row-span-2", 
+    icon: <Users className="w-5 h-5" />,classname: "col-span-3 row-span-1",
+     
   },
   {
     key: "developers-main",
-    badge: "For Developers",
+    badge: "For Developers",    
     title: "Simple, Secure Integration",
+    display: <DevMarquee />,
     blurb:
       "Onboard users faster with our easy-to-integrate API and widget. Focus on building your product, not on complex identity verification pipelines.",
     icon: <Code2 className="w-5 h-5" />,
     classname: "col-span-3 row-span-1",
   },
-  {
-    key: "business-main",
-    badge: "For Businesses",
-    title: "Reduce Fraud & Build Trust",
-    blurb:
-      "Lower your risk by accepting users who have already been verified by a licensed provider. Save time and operational costs on KYC and compliance.",
-    icon: <ShieldCheck className="w-5 h-5" />,
-    classname: "col-span-3 row-span-1",
-  },
+  
 ];
 
 export default function Offer() {
@@ -85,9 +94,14 @@ function OfferCard({ item }: { item: OfferItem }) {
           {item.badge}
         </span>
       </div>
-      <h3 className="mt-3 text-2xl lg:text-3xl">{item.title}</h3>
+      <div className="mt-4 flex-1">
+         {item.display}
+        </div>
+     <div className="mt-auto space-y-4">
+         <h3 className="mt-3 text-2xl lg:text-3xl">{item.title}</h3>
       <p className="mt-2 text-white/70 flex-1">{item.blurb}</p>
-      <div className="mt-4">
+        
+      
         <Button size="lg" variant="glassNeutral">
           Try it out
         </Button>
@@ -98,12 +112,8 @@ function OfferCard({ item }: { item: OfferItem }) {
 
 function VisualTile() {
   return (
-    <Card className="relative overflow-hidden border-white/10 bg-gradient-to-b from-[hsl(var(--primary)/0.18)] to-black/40 backdrop-blur-md rounded-2xl min-h-[200px]">
-      <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[hsl(var(--primary)/0.25)] blur-2xl" />
-      <div className="absolute -bottom-12 -left-8 w-48 h-48 rounded-full bg-[hsl(var(--primary)/0.18)] blur-2xl" />
-      <div className="p-6">
-        <p className="text-white/70">Privacy-first by design</p>
-      </div>
+    <Card className="relative overflow-hidden border-white/10 rounded-2xl min-h-[200px]">
+      <span></span>
     </Card>
   );
 }

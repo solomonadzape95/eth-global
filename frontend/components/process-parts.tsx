@@ -77,8 +77,8 @@ export function Step3IconBubbles() {
     <div className="relative flex items-center min-w-[265px] min-h-[305px] mx-auto my-2" aria-label="Third-party app logo group">
       <div className="flex flex-col gap-6 relative">
         <div className="w-full h-full marquee flex gap-5 items-center justify-center" style={{ animationDelay: "8s", animationDuration: "34s" }}>
-          {doubledLogos.reverse().map(({ logo: Logo }, idx) => (
-            <div key={idx} className="flex items-center justify-center relative" style={{ minWidth: 70, minHeight: 70, zIndex: 10 }}>
+          {doubledLogos.slice().reverse().map(({ logo: Logo }, idx) => (
+            <div key={`row1-${idx}`} className="flex items-center justify-center relative" style={{ minWidth: 70, minHeight: 70, zIndex: 10 }}>
               <IconBubble icon={Logo} size={70} iconProps={{ color: "#fff" }} />
             </div>
           ))}
