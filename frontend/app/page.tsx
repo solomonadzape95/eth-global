@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ParallaxBall from "@/components/parallax-ball";
 import Process from "@/components/process";
+import Contact from "@/components/contact";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
     {[...Array(4)].map((c,i) => <ParallaxBall ballNum={i+1 as 1 | 2| 3|4}/>)}
       <Hero/>
       <Process/>
+      <Contact/>
     </div>
   );
 }
