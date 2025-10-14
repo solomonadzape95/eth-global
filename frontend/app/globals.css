@@ -56,9 +56,14 @@
   animation: bounce 5s ease-in-out infinite
 }
 .marquee {
-  animation: marquee 15s linear infinite
+  animation: marquee 20s linear infinite
 }
-
+.pulse-scale {
+  animation: pulse-scale 4s linear infinite
+}
+.rotate {
+  animation: rotate .5s linear infinite
+}
 @layer base {
   * {
     @apply border-border;
@@ -84,5 +89,24 @@
   }
  to {
     transform: translateX(-100%);
+ }
+}
+@keyframes pulse-scale {
+  from {
+    transform: scale(1);
+  }
+ 50% {
+    transform: scale(1.2);
+ }
+ to{
+  transform: scale(1)
+ }
+}
+@keyframes rotate {
+  from {
+    rotate: 0deg;
+  }
+ to{
+  rotate: 360deg
  }
 }
