@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { label: "How it works", href: "#how-it-works" },
   { label: "Services", href: "#services" },
-  { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 export default function Header() {
@@ -98,7 +98,7 @@ export default function Header() {
           {/* Right: CTA + Mobile Hamburger (only one set now, persistent) */}
           <div className="flex items-center gap-3">
             <div className="hidden sm:block">
-              <Button variant="glassLight" size="lg">Book a Call</Button>
+              <Button variant="glassLight" size="lg">Create Your ID</Button>
             </div>
             {/* Hamburger always present on mobile, animates to X and triggers mobile nav */}
             <button
@@ -160,7 +160,7 @@ export default function Header() {
             </a>
             {/* Hamburger is only in the topbar, removed duplication here */}
             <span className="w-10 h-10" />
-          </div>
+            </div>
 
           <nav>
             <ul className="flex flex-col gap-5">
@@ -182,9 +182,9 @@ export default function Header() {
             <Button className="w-full" size="lg" variant="glassPrimary" onClick={() => setOpen(false)}>
               Get Started
             </Button>
-          </div>
+            </div>
         </aside>
-      </div>
+    </div>
     </header>
   );
 }

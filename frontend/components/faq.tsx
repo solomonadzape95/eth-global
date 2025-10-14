@@ -38,7 +38,7 @@ export default function FAQ() {
           <p className="text-sm text-primary">ANSWERS</p>
           <h2 className="text-4xl lg:text-7xl">FAQs</h2>
           <p className="text-white/70">Everything you need to know about privacy, security and usage.</p>
-          <a href="mailto:support@example.com" className="text-primary hover:underline">support@example.com</a>
+          <a href="mailto:support@example.com" className="text-primary hover:underline">support@keystone.com</a>
         </div>
 
         {/* Right accordion list */}

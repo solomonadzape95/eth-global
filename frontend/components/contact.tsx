@@ -18,7 +18,7 @@ export default function Contact() {
           <InfoCard
             icon={<Mail className="w-6 h-6" />}
             title="Mail"
-            lines={["hello@heliumtemplate.com"]}
+            lines={["support@keystone.id"]}
           />
           <InfoCard
             icon={<Phone className="w-6 h-6" />}
@@ -39,13 +39,13 @@ export default function Contact() {
               <input className={inputClass} placeholder="John Doe" />
             </FormField>
             <FormField label="Company Name">
-              <input className={inputClass} placeholder="AI Innovations Inc." />
+              <input className={inputClass} placeholder="ABC Inc." />
             </FormField>
             <FormField label="Email">
-              <input className={inputClass} type="email" placeholder="john.doe@aiagency.com" />
+              <input className={inputClass} type="email" placeholder="john.doe@keystone.com" />
             </FormField>
             <FormField label="Message">
-              <textarea className={inputClass + " min-h-[180px] resize-none"} placeholder="Hello! I'd like to learn more about your AI automation services." />
+              <textarea className={inputClass + " min-h-[180px] resize-none"} placeholder="Hello! I'd like to learn more about your services." />
             </FormField>
             <div className="pt-2">
               <Button type="submit" variant="glassPrimary" size="lg" className="w-full">Submit</Button>

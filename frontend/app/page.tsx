@@ -14,8 +14,8 @@ import Footer from "@/components/footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col items-center overflow-hidden relative">
-      <div className=" p-4 lg:p-8 ">
+  <div className="p-0 overflow-hidden">
+    <div className="min-h-screen flex flex-col p-4 lg:p-8 items-center  relative">
       <Header/>
     {[...Array(3)].map((c,i) => <ParallaxBall ballNum={i+1 as 1 | 2| 3|4}/>)}
       <Hero/>
@@ -23,7 +23,8 @@ export default function Home() {
       <Process/>
       <FAQ/>
       <Contact/>
-      </div>
+
+    </div>
       <Footer/>
     </div>
   );

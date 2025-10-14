@@ -32,8 +32,8 @@ const ITEMS: OfferItem[] = [
   {
     key: "individuals-main",
     badge: "For Individuals",
-    title: "Take Control of Your Identity",
-    display: <StackedNotification app="GitHub" message="Verified with Locus" subtext="You're good to go. Access granted to private repos." />,
+        title: "Take Control of Your Identity",
+        display: <StackedNotification app="GitHub" message="Verified with Keystone" subtext="You're good to go. Access granted to private repos." />, 
     blurb:
       "Stop uploading your sensitive documents to dozens of sites. Our privacy-first platform ensures you share a proof, not your personal data.",
     icon: <Users className="w-5 h-5" />,classname: "col-span-3 row-span-1",

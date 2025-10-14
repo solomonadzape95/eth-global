@@ -2,13 +2,13 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 export default function Hero() {
     return <div className="max-w-6xl flex flex-col justify-start items-start w-full gap-10 pt-48 lg:pt-96">
-        <h1 className="text-6xl xl:text-8xl font-bold">Lorem ipsum dolor sit.</h1>
-        <p className="text-lg text-white/50">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit voluptatem iure voluptate dignissimos consectetur vero?</p>
+        <h1 className="text-6xl xl:text-8xl font-bold">Verify Once. Trusted Everywhere.</h1>
+        <p className="text-lg text-white/70">Get your secure, reusable digital identity. Prove who you are one time and use that proof across any app, website, or service—without ever sharing your personal documents again.</p>
         <section className="flex items-center flex-col lg:flex-row w-full lg:w-1/2 gap-3">
         <Button className="w-full" size="lg" variant="glassPrimary">
-              Get Started
+              Create Your ID
             </Button>
-            <Button className="w-full" variant="glassNeutral" size="lg">View Docs</Button>
+            <Button className="w-full" variant="glassNeutral" size="lg">Developer Docs</Button>
         </section>
         <section  className="pt-20">
             <p className="text-lg text-white/70">Trusted by 150+ protocols and teams</p>
