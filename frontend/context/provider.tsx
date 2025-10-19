@@ -6,22 +6,6 @@ import { mainnet, base, baseSepolia } from '@reown/appkit/networks'
 import React, { type ReactNode } from 'react'
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi"
 
-/**
- * To show specific wallets (like MetaMask, Base Wallet, WalletConnect, etc.) initially in the modal,
- * use the `wallets` option in the createAppKit configuration. 
- * This list controls the order and visiblity of wallet options to display to users on first open.
- * 
- * For example, to prioritize MetaMask, Base, WalletConnect, and other specific wallets:
- * 
- * wallets: [
- *   'metamask',         // MetaMask browser extension
- *   'base',             // Base Wallet
- *   'walletConnect',    // WalletConnect option
- *   // ... any other wallet IDs supported by your integration
- * ]
- * 
- * Full list of wallet IDs available usually in your wallet kit's documentation. 
- */
 
 if (!projectId) {
     throw new Error("Project ID is not defined.")
@@ -42,7 +26,6 @@ export const modal = createAppKit({
         analytics: true,
         email: false,
         socials: false,
-        legalCheckbox: true,
         
     },
     themeMode: 'dark',
