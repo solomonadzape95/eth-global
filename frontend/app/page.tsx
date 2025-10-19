@@ -1,18 +1,25 @@
+"use client"
+import { useEffect } from "react";
 import Header from "@/components/header";
 import Hero from "@/components/hero";
-import imgUrl from "@/assets/ball-webpage.png"
-import { Button } from "@/components/ui/button";
-import { Shield, Lock, Key } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import ParallaxBall from "@/components/parallax-ball";
 import Process from "@/components/process";
 import Contact from "@/components/contact";
 import FAQ from "@/components/faq";
 import Offer from "@/components/offer";
 import Footer from "@/components/footer";
+import { useRouter } from "next/navigation";
+import { useAccount } from "wagmi";
 
 export default function Home() {
+  const {isConnected} = useAccount()
+  const router = useRouter()
+
+  useEffect(() => {
+    if(isConnected) {
+      router.push("/dashboard")
+    }
+  }, [isConnected, router])
   return (
   <div className="p-0 overflow-hidden">
     <div className="min-h-screen flex flex-col p-4 lg:p-8 items-center  relative">
