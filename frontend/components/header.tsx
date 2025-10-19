@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import logo from "@/assets/keystone-logo.svg"
 import Image from "next/image";
 import ConnectButton from "./connect-button";
+import { useNavbarHide } from "@/hooks/use-navbar-hiding";
 
 const NAV_ITEMS = [
   { label: "How it works", href: "#process" },
@@ -16,9 +17,7 @@ const NAV_ITEMS = [
 
 export default function Header() {
   const [open, setOpen] = React.useState(false);
-  const [scrollDirection,setScrollDirection] = React.useState("up")
-  const prevScrollPosition = React.useRef(0)
-  const ticking = React.useRef(false)
+  const scrollDirection = useNavbarHide()
 
   React.useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -27,28 +26,7 @@ export default function Header() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
-React.useEffect(() => {
-  function onScroll(e: Event){
-    const currentScrollPosition = window.scrollY;
 
-    if(!ticking.current){
-    window.requestAnimationFrame(() => {
-      if(currentScrollPosition > prevScrollPosition.current){
-        setScrollDirection("down")
-      }else{
-        setScrollDirection("up")
-      }
-
-      prevScrollPosition.current = currentScrollPosition;
-
-      ticking.current = false
-    })
-    ticking.current = true
-    }
-  }
-  window.addEventListener("scroll", onScroll)
-  return () => window.removeEventListener("scroll", onScroll)
-})
   // Improved Hamburger: lines are both bolder and better animated for X transition
   function Hamburger({ open }: { open: boolean }) {
     return (
