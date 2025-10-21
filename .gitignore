@@ -13,6 +13,9 @@ yarn.lock
 # testing
 /coveragea
 
+**/.env.*
+
+
 
 
 # next.js

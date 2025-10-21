@@ -29,7 +29,7 @@ const process = [
 
 export default function Process() {
     return (
-        <div className="max-w-6xl flex flex-col justify-start items-start w-full mt-32 gap-5 lg:gap-8">
+        <div className="max-w-6xl flex flex-col justify-start items-start w-full mt-32 gap-5 lg:gap-8" id="process">
             <p className="text-sm text-primary">PROCESS</p>
             <h2 className="text-4xl lg:text-7xl">How it works</h2>
             <section className="w-full grid grid-cols-1 lg:grid-cols-3 gap-5">

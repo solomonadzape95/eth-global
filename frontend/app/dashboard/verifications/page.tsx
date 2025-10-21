@@ -1,0 +1,53 @@
+"use client";
+
+import { useState } from "react";
+import { SearchBar } from "@/components/verifications/search-bar";
+import { Tabs } from "@/components/verifications/tabs";
+import { VerificationGrid } from "@/components/verifications/verification-grid";
+import { EmptyState } from "@/components/verifications/empty-state";
+import { verificationTypes } from "@/components/verifications/verification-data";
+
+export default function Verifications() {
+  const [activeTab, setActiveTab] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredVerifications = verificationTypes.filter(verification => {
+    const matchesSearch = verification.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         verification.description.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    if (activeTab === "added") return matchesSearch && verification.status === "added";
+    if (activeTab === "not-added") return matchesSearch && verification.status === "not-added";
+    return matchesSearch;
+  });
+
+  const tabs = [
+    { id: "all", label: "All", count: verificationTypes.length },
+    { id: "added", label: "Added", count: verificationTypes.filter(v => v.status === "added").length },
+    { id: "not-added", label: "Not Added", count: verificationTypes.filter(v => v.status === "not-added").length }
+  ];
+
+  return (
+    <div className="min-h-screen bg-black text-white p-6">
+      <div className="max-w-6xl mx-auto mt-3 md:mt-12">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-white mb-2">Verifications</h1>
+          <p className="text-white/60">Manage your identity verifications and credentials</p>
+        </div>
+
+        {/* Search and Filter Bar */}
+        <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+
+        {/* Tabs */}
+        <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+
+        {/* Verification Cards Grid */}
+        {filteredVerifications.length > 0 ? (
+          <VerificationGrid verifications={filteredVerifications} />
+        ) : (
+          <EmptyState searchQuery={searchQuery} />
+        )}
+      </div>
+    </div>
+  );
+}

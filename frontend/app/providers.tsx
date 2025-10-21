@@ -1,5 +1,6 @@
 "use client";
 
+import ContextProvider from "@/context/provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -16,6 +17,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 
   return (
+    <ContextProvider cookies={null}>
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </ContextProvider>
   );
 }

@@ -5,16 +5,19 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/keystone-logo.svg"
 import Image from "next/image";
+import ConnectButton from "./connect-button";
+import { useNavbarHide } from "@/hooks/use-navbar-hiding";
 
 const NAV_ITEMS = [
-  { label: "How it works", href: "#how-it-works" },
+  { label: "How it works", href: "#process" },
   { label: "Services", href: "#services" },
-  { label: "Contact", href: "#contact" },
   { label: "FAQ", href: "#faq" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Header() {
   const [open, setOpen] = React.useState(false);
+  const scrollDirection = useNavbarHide()
 
   React.useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -53,7 +56,12 @@ export default function Header() {
   }
 
   return (
-    <header className="fixed top-0 inset-x-0 z-40">
+    <header
+      className={cn(
+        "fixed top-0 inset-x-0 z-40 transition-transform duration-300",
+        scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
+      )}
+    >
       <div
         className={cn(
           "mx-auto max-w-6xl px-6 lg:px-0 py-2 lg:py-8",
@@ -102,10 +110,10 @@ export default function Header() {
             </div>
           </nav>
 
-          {/* Right: CTA + Mobile Hamburger (only one set now, persistent) */}
+          {/* Right: CTA + Mobile Hamburger */}
           <div className="flex items-center gap-3">
             <div className="hidden sm:block">
-              <Button variant="glassLight" size="lg">Create Your ID</Button>
+              <ConnectButton onClick={() => {}}/>
             </div>
             <button
               aria-label={open ? "Close menu" : "Open menu"}
@@ -124,7 +132,7 @@ export default function Header() {
       {/* Mobile overlay, with slide-down effect for the menu */}
       <div
         className={cn(
-          "pointer-events-none fixed inset-0 z-40 md:hidden",
+          "pointer-events-none fixed top-16 left-0 right-0 bottom-0 z-40 md:hidden",
           open && "pointer-events-auto"
         )}
       >
@@ -136,38 +144,19 @@ export default function Header() {
           )}
           onClick={() => setOpen(false)}
         />
-        {/* The slide-down panel for the menu */}
         <aside
           className={cn(
-            "absolute left-0 top-0 w-full px-6 py-4 border-r border-white/10 bg-black/70 backdrop-blur-xl z-50 flex flex-col gap-8 transition-transform duration-300",
+            "absolute left-0 top-0 w-full px-6 py-4 border-r border-white/10 bg-black/70 backdrop-blur-xl z-40 flex flex-col gap-8 transition-transform duration-300",
             "rounded-b-2xl shadow-[0_8px_28px_rgba(0,0,0,0.35)]",
             open
-              ? "translate-y-0 opacity-100"
-              : "-translate-y-10 opacity-0 pointer-events-none"
+              ? " opacity-100"
+              : "opacity-0 pointer-events-none"
           )}
           style={{
-            minHeight: "calc(100vh - 0px)",
+            minHeight: "calc(100vh - 64px)",
             willChange: "transform, opacity",
           }}
         >
-          {/* Header section (Logo, only on mobile panel now, no hamburger) */}
-          <div className="flex items-center justify-between">
-            <a href="#home" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-            <span
-              className={cn(
-                "w-9 h-9 rounded-[7px] border border-white/10 p-1",
-                "bg-gradient-to-b from-[hsl(var(--primary)/0.88)] to-[hsl(var(--primary)/0.76)]",
-                "backdrop-blur-md shadow-[0_10px_30px_rgba(16,185,129,0.25)]",
-                "grid place-items-center text-sm font-semibold text-white"
-              )}
-            >
-              <Image src={logo} width={100} height={100} alt="logo"/>
-            </span>
-            </a>
-            {/* Hamburger is only in the topbar, removed duplication here */}
-            <span className="w-10 h-10" />
-            </div>
-
           <nav>
             <ul className="flex flex-col gap-5">
               {NAV_ITEMS.map((item) => (
@@ -185,12 +174,10 @@ export default function Header() {
           </nav>
 
           <div className="mt-auto">
-            <Button className="w-full" size="lg" variant="glassPrimary" onClick={() => setOpen(false)}>
-              Get Started
-            </Button>
-            </div>
+            <ConnectButton onClick={() => {}}/>
+          </div>
         </aside>
-    </div>
+      </div>
     </header>
   );
 }
