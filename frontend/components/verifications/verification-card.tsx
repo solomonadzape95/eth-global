@@ -2,6 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { DocumentUploadDialog } from "./document-upload-dialog";
+import { useState } from "react";
+import { useVerification } from "@/hooks/use-verification";
 
 interface VerificationCardProps {
   verification: {
@@ -16,6 +19,8 @@ interface VerificationCardProps {
 
 export function VerificationCard({ verification }: VerificationCardProps) {
   const IconComponent = verification.icon;
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const { loading, status, beginVerification } = useVerification();
 
 
   const getStatusBadge = (status: string) => {
@@ -27,6 +32,12 @@ export function VerificationCard({ verification }: VerificationCardProps) {
       default:
         return <Badge label="not-added" />;
     }
+  };
+
+  const handleUpload = async (files: File[]) => {
+    // In a real flow, we'd send files to backend, then call beginVerification
+    await beginVerification();
+    setDialogOpen(false);
   };
 
   return (
@@ -64,7 +75,7 @@ export function VerificationCard({ verification }: VerificationCardProps) {
       </div>      
       
       <div className="mt-auto">
-        {verification.status === "added" ? (
+        {status?.is_verified || verification.status === "added" ? (
           <Button className="w-full" variant="glassPrimary" size={"lg"}>
             View Details
           </Button>
@@ -78,11 +89,31 @@ export function VerificationCard({ verification }: VerificationCardProps) {
             Coming Soon
           </Button>
         ) : (
-          <Button className="w-full" variant="glassLight" size={"lg"}>
-            Add Verification
+          <Button 
+            className="w-full" 
+            variant="glassLight" 
+            size={"lg"}
+            onClick={() => setDialogOpen(true)}
+            disabled={loading}
+          >
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Processing...
+              </div>
+            ) : (
+              "Add Verification"
+            )}
           </Button>
         )}
       </div>
+      
+      <DocumentUploadDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        verificationType={verification.title}
+        onUpload={handleUpload}
+      />
     </Card>
   );
 }
