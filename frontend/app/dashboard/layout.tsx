@@ -13,6 +13,7 @@ import { useAccount } from "wagmi";
 const DASHBOARD_NAV_ITEMS = [
   { label: "Verifications", href: "/dashboard/verifications" },
   { label: "Activity", href: "/dashboard/activity" },
+  { label: "API Docs", href: "/docs" },
   { label: "Settings", href: "/dashboard/settings" },
 ];
 
