@@ -11,6 +11,7 @@ import { useNavbarHide } from "@/hooks/use-navbar-hiding";
 const NAV_ITEMS = [
   { label: "How it works", href: "#process" },
   { label: "Services", href: "#services" },
+  { label: "API Docs", href: "/docs" },
   { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ];
