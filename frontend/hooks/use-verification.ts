@@ -1,52 +1,31 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { checkStatus, startVerification, type CheckStatusResponse, type StartVerificationResponse } from "@/lib/api";
+import { useSimpleStatusQuery, useStartVerificationMutation } from "./use-verifications-query";
+import { type CheckStatusResponse, type StartVerificationResponse } from "@/lib/api";
 
-export function useVerification() {
+export function useVerification(verificationType?: string) {
   const { address, isConnected } = useAccount();
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState<CheckStatusResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { data: status, isLoading: loading, error, refetch: fetchStatus } = useSimpleStatusQuery();
+  const startVerificationMutation = useStartVerificationMutation();
 
-  const fetchStatus = useCallback(async () => {
-    if (!address) return;
-    setLoading(true);
-    setError(null);
+  const beginVerification = async () => {
+    if (!address || !verificationType) return;
+    
     try {
-      const res = await checkStatus(address);
-      setStatus(res);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-    } finally {
-      setLoading(false);
+      const result = await startVerificationMutation.mutateAsync({ verificationType });
+      return result;
+    } catch (error) {
+      throw error;
     }
-  }, [address]);
+  };
 
-  useEffect(() => {
-    if (isConnected) {
-      fetchStatus();
-    }
-  }, [isConnected, fetchStatus]);
-
-  const beginVerification = useCallback(async () => {
-    if (!address) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const res: StartVerificationResponse = await startVerification(address);
-      // After start, re-check status
-      await fetchStatus();
-      return res;
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-      throw e;
-    } finally {
-      setLoading(false);
-    }
-  }, [address, fetchStatus]);
-
-  return { loading, status, error, fetchStatus, beginVerification };
+  return { 
+    loading: loading || startVerificationMutation.isPending, 
+    status, 
+    error: error?.message || startVerificationMutation.error?.message || null, 
+    fetchStatus, 
+    beginVerification 
+  };
 }
 
