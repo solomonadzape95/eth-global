@@ -4,14 +4,14 @@ import { BsCamera } from "react-icons/bs";
 import { IoIosHome } from "react-icons/io";
 import { TiBusinessCard } from "react-icons/ti";
 
+// Base verification types - status will be determined dynamically
 export const verificationTypes = [
   {
-    id: "govt-id",
-    title: "Government ID",
-    description: "Verify your identity with a government-issued document",
+    id: "identity-verification",
+    title: "Identity Verification",
+    description: "Verify your identity with government-issued documents",
     icon: TiBusinessCard,
-    status: "added",
-    addedDate: "2024-01-15"
+    status: "not-added" // Will be updated dynamically
   },
   {
     id: "proof-of-address",

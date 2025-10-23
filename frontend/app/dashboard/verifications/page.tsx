@@ -5,13 +5,14 @@ import { SearchBar } from "@/components/verifications/search-bar";
 import { Tabs } from "@/components/verifications/tabs";
 import { VerificationGrid } from "@/components/verifications/verification-grid";
 import { EmptyState } from "@/components/verifications/empty-state";
-import { verificationTypes } from "@/components/verifications/verification-data";
+import { useVerifications } from "@/hooks/use-verifications";
 
 export default function Verifications() {
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const { loading, verifications, error } = useVerifications();
 
-  const filteredVerifications = verificationTypes.filter(verification => {
+  const filteredVerifications = verifications.filter(verification => {
     const matchesSearch = verification.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          verification.description.toLowerCase().includes(searchQuery.toLowerCase());
     
@@ -21,10 +22,34 @@ export default function Verifications() {
   });
 
   const tabs = [
-    { id: "all", label: "All", count: verificationTypes.length },
-    { id: "added", label: "Added", count: verificationTypes.filter(v => v.status === "added").length },
-    { id: "not-added", label: "Not Added", count: verificationTypes.filter(v => v.status === "not-added").length }
+    { id: "all", label: "All", count: verifications.length },
+    { id: "added", label: "Added", count: verifications.filter(v => v.status === "added").length },
+    { id: "not-added", label: "Not Added", count: verifications.filter(v => v.status === "not-added").length }
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black text-white p-6">
+        <div className="max-w-6xl mx-auto mt-3 md:mt-12">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-white/60">Loading verifications...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-black text-white p-6">
+        <div className="max-w-6xl mx-auto mt-3 md:mt-12">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-red-400">Error loading verifications: {error}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black text-white p-6">

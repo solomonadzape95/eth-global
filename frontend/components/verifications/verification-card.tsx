@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DocumentUploadDialog } from "./document-upload-dialog";
+import { VerificationDetailsModal } from "./verification-details-modal";
 import { useState } from "react";
 import { useVerification } from "@/hooks/use-verification";
 
@@ -14,13 +15,20 @@ interface VerificationCardProps {
     icon: React.ComponentType<{ className?: string }>;
     status: string;
     addedDate?: string;
+    cid?: string;
+    baseTxHash?: string;
+    isVerified?: boolean;
+    verificationType?: string;
+    consented?: boolean;
+    message?: string;
   };
 }
 
 export function VerificationCard({ verification }: VerificationCardProps) {
   const IconComponent = verification.icon;
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { loading, status, beginVerification } = useVerification();
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const { loading, status, beginVerification } = useVerification(verification.id);
 
 
   const getStatusBadge = (status: string) => {
@@ -63,20 +71,40 @@ export function VerificationCard({ verification }: VerificationCardProps) {
         <IconComponent className="w-36 h-36" />
       </div>
       
-      {verification.status === "added" && (
+      {verification.status === "added" && verification.addedDate && (
         <p className="text-sm text-green-400 mb-2">
-          Added on {new Date(verification.addedDate!).toLocaleDateString()}
+          Added on {new Date(verification.addedDate).toLocaleDateString()}
         </p>
       )}
       
       
       <div className="flex items-center justify-center mb-4 absolute top-3 right-3">
         {getStatusBadge(verification.status)}
-      </div>      
+      </div>
+      
+      {/* Consent Status Display */}
+      {verification.status === "added" && (
+        <div className="mb-4">
+          <div className="flex items-center gap-2">
+            <Badge 
+              label={verification.consented ? "Shared with 3rd parties" : "Private"}
+              className="text-xs"
+            />
+            {verification.message && (
+              <span className="text-xs text-gray-400">{verification.message}</span>
+            )}
+          </div>
+        </div>
+      )}
       
       <div className="mt-auto">
-        {status?.is_verified || verification.status === "added" ? (
-          <Button className="w-full" variant="glassPrimary" size={"lg"}>
+        {verification.status === "added" ? (
+          <Button 
+            className="w-full" 
+            variant="glassPrimary" 
+            size={"lg"}
+            onClick={() => setDetailsOpen(true)}
+          >
             View Details
           </Button>
         ) : verification.status === "coming-soon" ? (
@@ -113,6 +141,37 @@ export function VerificationCard({ verification }: VerificationCardProps) {
         onOpenChange={setDialogOpen}
         verificationType={verification.title}
         onUpload={handleUpload}
+      />
+      
+      <VerificationDetailsModal
+        open={detailsOpen}
+        onOpenChange={setDetailsOpen}
+        verification={{
+          id: verification.id,
+          title: verification.title,
+          description: verification.description,
+          status: verification.status,
+          addedDate: verification.addedDate,
+          cid: verification.cid,
+          baseTxHash: verification.baseTxHash,
+          verificationType: verification.verificationType || verification.id,
+          isVerified: verification.isVerified || false,
+          consented: verification.consented,
+          message: verification.message,
+          // Add verification-specific data (these would come from the API response)
+          university: (verification as any).university,
+          student_id: (verification as any).student_id,
+          graduation_year: (verification as any).graduation_year,
+          country: (verification as any).country,
+          is_over_18: (verification as any).is_over_18,
+          document_type: (verification as any).document_type,
+          company: (verification as any).company,
+          position: (verification as any).position,
+          salary_range: (verification as any).salary_range,
+          address: (verification as any).address,
+          biometric_verified: (verification as any).biometric_verified,
+          liveness_score: (verification as any).liveness_score
+        }}
       />
     </Card>
   );
