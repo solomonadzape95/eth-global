@@ -48,67 +48,57 @@ export default function DocsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20">
-      <div className="container mx-auto px-4 py-8">
+    <div className="p-0 overflow-hidden">
+      <div className="min-h-screen flex flex-col p-4 lg:p-8 items-center relative">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-            Keystone API Documentation
-          </h1>
-          <p className="text-xl text-white/80 max-w-3xl mx-auto">
-            Integrate decentralized identity verification into your application with our comprehensive API
-          </p>
-        </div>
+        <div className="max-w-6xl flex flex-col justify-start items-start w-full gap-10 pt-48 lg:pt-96">
+          <h1 className="text-6xl xl:text-8xl font-bold">API Documentation</h1>
+          <p className="text-lg text-white/70">Integrate decentralized identity verification into your application with our comprehensive API. Build the future of identity verification.</p>
 
         {/* Quick Start */}
-        <Card className="mb-8 bg-white/5 border-white/10">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Zap className="w-6 h-6 text-yellow-400" />
-              Quick Start
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-white/80">
-              Get started with Keystone API in just a few lines of code. Check if a user is verified:
-            </p>
-            <CodeBlock id="quickstart">
+        <section className="w-full">
+          <h2 className="text-3xl font-bold mb-6">Quick Start</h2>
+          <p className="text-lg text-white/70 mb-8">
+            Get started with Keystone API in just a few lines of code. Check if a user is verified:
+          </p>
+          <CodeBlock id="quickstart">
 {`// Check if user is verified
 const response = await fetch(
   'https://your-backend-url.com/simple-status?address=0x1234...'
 );
 const { isVerified } = await response.json();
 console.log('User verified:', isVerified);`}
-            </CodeBlock>
-          </CardContent>
-        </Card>
+          </CodeBlock>
+        </section>
 
         {/* API Endpoints */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <Card className="bg-white/5 border-white/10">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="w-6 h-6 text-green-400" />
-                Simple Status Check
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Badge label="GET" className="bg-green-500/20 text-green-400" />
-                <code className="text-sm">/simple-status</code>
-              </div>
-              <p className="text-white/80 text-sm">
-                Check if a user has any verified identity without requiring signature.
-              </p>
-              <div className="space-y-2">
-                <div className="text-sm">
-                  <span className="text-white/60">Parameters:</span>
-                  <ul className="ml-4 text-white/80">
+        <section className="w-full">
+          <h2 className="text-3xl font-bold mb-6">API Endpoints</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="p-6 flex flex-col justify-start gap-4 h-[400px] relative overflow-hidden group">
+              <section>
+                <div className="flex items-center gap-2 mb-4">
+                  <Shield className="w-6 h-6 text-green-400" />
+                  <h3 className="text-xl font-bold">Simple Status Check</h3>
+                </div>
+                <div className="flex items-center gap-2 mb-4">
+                  <Badge label="GET" className="bg-green-500/20 text-green-400" />
+                  <code className="text-sm text-white/60">/simple-status</code>
+                </div>
+                <p className="text-white/70 mb-4">
+                  Check if a user has any verified identity without requiring signature.
+                </p>
+              </section>
+              
+              <div className="flex-1 space-y-4">
+                <div>
+                  <span className="text-white/60 text-sm">Parameters:</span>
+                  <ul className="ml-4 text-white/80 text-sm">
                     <li>• address (required): User's wallet address</li>
                   </ul>
                 </div>
-                <div className="text-sm">
-                  <span className="text-white/60">Response:</span>
+                <div>
+                  <span className="text-white/60 text-sm">Response:</span>
                   <CodeBlock id="simple-status">
 {`{
   "isVerified": true,
@@ -117,34 +107,33 @@ console.log('User verified:', isVerified);`}
                   </CodeBlock>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </Card>
 
-          <Card className="bg-white/5 border-white/10">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="w-6 h-6 text-blue-400" />
-                Get All Verifications
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Badge label="GET" className="bg-blue-500/20 text-blue-400" />
-                <code className="text-sm">/verifications</code>
-              </div>
-              <p className="text-white/80 text-sm">
-                Retrieve all verification types for a user with consent checking.
-              </p>
-              <div className="space-y-2">
-                <div className="text-sm">
-                  <span className="text-white/60">Parameters:</span>
-                  <ul className="ml-4 text-white/80">
+            <Card className="p-6 flex flex-col justify-start gap-4 h-[400px] relative overflow-hidden group">
+              <section>
+                <div className="flex items-center gap-2 mb-4">
+                  <Users className="w-6 h-6 text-blue-400" />
+                  <h3 className="text-xl font-bold">Get All Verifications</h3>
+                </div>
+                <div className="flex items-center gap-2 mb-4">
+                  <Badge label="GET" className="bg-blue-500/20 text-blue-400" />
+                  <code className="text-sm text-white/60">/verifications</code>
+                </div>
+                <p className="text-white/70 mb-4">
+                  Retrieve all verification types for a user with consent checking.
+                </p>
+              </section>
+              
+              <div className="flex-1 space-y-4">
+                <div>
+                  <span className="text-white/60 text-sm">Parameters:</span>
+                  <ul className="ml-4 text-white/80 text-sm">
                     <li>• address (required): User's wallet address</li>
                     <li>• requestedBy (optional): Your app identifier</li>
                   </ul>
                 </div>
-                <div className="text-sm">
-                  <span className="text-white/60">Response:</span>
+                <div>
+                  <span className="text-white/60 text-sm">Response:</span>
                   <CodeBlock id="verifications">
 {`{
   "walletAddress": "0x1234...",
@@ -161,22 +150,17 @@ console.log('User verified:', isVerified);`}
                   </CodeBlock>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            </Card>
+          </div>
+        </section>
 
         {/* Integration Examples */}
-        <Card className="mb-8 bg-white/5 border-white/10">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Code className="w-6 h-6 text-purple-400" />
-              Integration Examples
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
+        <section className="w-full">
+          <h2 className="text-3xl font-bold mb-6">Integration Examples</h2>
+          <div className="space-y-8">
             {/* JavaScript Example */}
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-white">JavaScript/TypeScript</h3>
+              <h3 className="text-xl font-bold mb-4 text-white">JavaScript/TypeScript</h3>
               <CodeBlock id="js-example">
 {`// Check if user is verified
 async function checkUserVerification(walletAddress) {
@@ -217,7 +201,7 @@ async function checkStudentStatus(walletAddress) {
 
             {/* React Hook Example */}
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-white">React Hook</h3>
+              <h3 className="text-xl font-bold mb-4 text-white">React Hook</h3>
               <CodeBlock id="react-example">
 {`import { useState, useEffect } from 'react';
 
@@ -249,189 +233,187 @@ function useVerificationStatus(walletAddress) {
 }`}
               </CodeBlock>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </section>
 
         {/* Verification Types */}
-        <Card className="mb-8 bg-white/5 border-white/10">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Globe className="w-6 h-6 text-cyan-400" />
-              Verification Types
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-4">
-                <div className="p-4 bg-white/5 rounded-lg">
-                  <h4 className="font-semibold text-white mb-2">Student Verification</h4>
-                  <p className="text-sm text-white/80 mb-2">Educational platforms, student discounts</p>
-                  <div className="text-xs text-white/60">
+        <section className="w-full">
+          <h2 className="text-3xl font-bold mb-6">Verification Types</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <Card className="p-6 flex flex-col justify-start gap-4 h-[200px] relative overflow-hidden group">
+                <section>
+                  <h4 className="text-xl font-bold text-white mb-2">Student Verification</h4>
+                  <p className="text-white/70 mb-4">Educational platforms, student discounts</p>
+                  <div className="text-sm text-white/60">
                     Fields: university, student_id, graduation_year
                   </div>
-                </div>
-                <div className="p-4 bg-white/5 rounded-lg">
-                  <h4 className="font-semibold text-white mb-2">Identity Verification</h4>
-                  <p className="text-sm text-white/80 mb-2">Age-restricted services, KYC compliance</p>
-                  <div className="text-xs text-white/60">
+                </section>
+              </Card>
+              <Card className="p-6 flex flex-col justify-start gap-4 h-[200px] relative overflow-hidden group">
+                <section>
+                  <h4 className="text-xl font-bold text-white mb-2">Identity Verification</h4>
+                  <p className="text-white/70 mb-4">Age-restricted services, KYC compliance</p>
+                  <div className="text-sm text-white/60">
                     Fields: country, is_over_18, document_type
                   </div>
-                </div>
-                <div className="p-4 bg-white/5 rounded-lg">
-                  <h4 className="font-semibold text-white mb-2">Employment Verification</h4>
-                  <p className="text-sm text-white/80 mb-2">Professional networks, job platforms</p>
-                  <div className="text-xs text-white/60">
+                </section>
+              </Card>
+              <Card className="p-6 flex flex-col justify-start gap-4 h-[200px] relative overflow-hidden group">
+                <section>
+                  <h4 className="text-xl font-bold text-white mb-2">Employment Verification</h4>
+                  <p className="text-white/70 mb-4">Professional networks, job platforms</p>
+                  <div className="text-sm text-white/60">
                     Fields: company, position, salary_range
                   </div>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div className="p-4 bg-white/5 rounded-lg">
-                  <h4 className="font-semibold text-white mb-2">Address Verification</h4>
-                  <p className="text-sm text-white/80 mb-2">Financial services, delivery platforms</p>
-                  <div className="text-xs text-white/60">
+                </section>
+              </Card>
+            </div>
+            <div className="space-y-4">
+              <Card className="p-6 flex flex-col justify-start gap-4 h-[200px] relative overflow-hidden group">
+                <section>
+                  <h4 className="text-xl font-bold text-white mb-2">Address Verification</h4>
+                  <p className="text-white/70 mb-4">Financial services, delivery platforms</p>
+                  <div className="text-sm text-white/60">
                     Fields: address, document_type
                   </div>
-                </div>
-                <div className="p-4 bg-white/5 rounded-lg">
-                  <h4 className="font-semibold text-white mb-2">Biometric Verification</h4>
-                  <p className="text-sm text-white/80 mb-2">High-security applications</p>
-                  <div className="text-xs text-white/60">
+                </section>
+              </Card>
+              <Card className="p-6 flex flex-col justify-start gap-4 h-[200px] relative overflow-hidden group">
+                <section>
+                  <h4 className="text-xl font-bold text-white mb-2">Biometric Verification</h4>
+                  <p className="text-white/70 mb-4">High-security applications</p>
+                  <div className="text-sm text-white/60">
                     Fields: biometric_verified, liveness_score
                   </div>
-                </div>
-              </div>
+                </section>
+              </Card>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </section>
 
         {/* Privacy & Security */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <Card className="bg-white/5 border-white/10">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lock className="w-6 h-6 text-red-400" />
-                Privacy & Consent
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-white">User Control</h4>
-                  <p className="text-sm text-white/80">Users control which verifications they share</p>
+        <section className="w-full">
+          <h2 className="text-3xl font-bold mb-6">Privacy & Security</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="p-6 flex flex-col justify-start gap-4 h-[300px] relative overflow-hidden group">
+              <section>
+                <div className="flex items-center gap-2 mb-4">
+                  <Lock className="w-6 h-6 text-red-400" />
+                  <h3 className="text-xl font-bold">Privacy & Consent</h3>
                 </div>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-white">Decentralized Storage</h4>
-                  <p className="text-sm text-white/80">Data stored on IPFS, not our servers</p>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-white">User Control</h4>
+                      <p className="text-sm text-white/70">Users control which verifications they share</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-white">Decentralized Storage</h4>
+                      <p className="text-sm text-white/70">Data stored on IPFS, not our servers</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-white">Revocable Consent</h4>
+                      <p className="text-sm text-white/70">Users can revoke access anytime</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-white">Revocable Consent</h4>
-                  <p className="text-sm text-white/80">Users can revoke access anytime</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </section>
+            </Card>
 
-          <Card className="bg-white/5 border-white/10">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="w-6 h-6 text-yellow-400" />
-                Security Features
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-white">Signature Verification</h4>
-                  <p className="text-sm text-white/80">Cryptographic proof of user consent</p>
+            <Card className="p-6 flex flex-col justify-start gap-4 h-[300px] relative overflow-hidden group">
+              <section>
+                <div className="flex items-center gap-2 mb-4">
+                  <Shield className="w-6 h-6 text-yellow-400" />
+                  <h3 className="text-xl font-bold">Security Features</h3>
                 </div>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-white">Blockchain Proofs</h4>
-                  <p className="text-sm text-white/80">Immutable verification records</p>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-white">Signature Verification</h4>
+                      <p className="text-sm text-white/70">Cryptographic proof of user consent</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-white">Blockchain Proofs</h4>
+                      <p className="text-sm text-white/70">Immutable verification records</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-white">Rate Limiting</h4>
+                      <p className="text-sm text-white/70">Protection against abuse</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-white">Rate Limiting</h4>
-                  <p className="text-sm text-white/80">Protection against abuse</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              </section>
+            </Card>
+          </div>
+        </section>
 
         {/* Error Handling */}
-        <Card className="mb-8 bg-white/5 border-white/10">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertCircle className="w-6 h-6 text-orange-400" />
-              Error Handling
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
-                <h4 className="font-semibold text-red-400 mb-2">400 Bad Request</h4>
-                <p className="text-sm text-white/80">Missing required parameters</p>
-              </div>
-              <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                <h4 className="font-semibold text-yellow-400 mb-2">401 Unauthorized</h4>
-                <p className="text-sm text-white/80">Invalid signature</p>
-              </div>
-              <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
-                <h4 className="font-semibold text-red-400 mb-2">500 Server Error</h4>
-                <p className="text-sm text-white/80">Server-side error</p>
-              </div>
+        <section className="w-full">
+          <h2 className="text-3xl font-bold mb-6">Error Handling</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+              <h4 className="font-semibold text-red-400 mb-2">400 Bad Request</h4>
+              <p className="text-sm text-white/70">Missing required parameters</p>
             </div>
-            <CodeBlock id="error-example">
+            <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+              <h4 className="font-semibold text-yellow-400 mb-2">401 Unauthorized</h4>
+              <p className="text-sm text-white/70">Invalid signature</p>
+            </div>
+            <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+              <h4 className="font-semibold text-red-400 mb-2">500 Server Error</h4>
+              <p className="text-sm text-white/70">Server-side error</p>
+            </div>
+          </div>
+          <CodeBlock id="error-example">
 {`{
   "error": "address parameter is required"
 }`}
-            </CodeBlock>
-          </CardContent>
-        </Card>
+          </CodeBlock>
+        </section>
 
         {/* CTA */}
-        <Card className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-purple-500/30">
-          <CardContent className="text-center py-8">
-            <h2 className="text-2xl font-bold mb-4 text-white">Ready to Integrate?</h2>
-            <p className="text-white/80 mb-6 max-w-2xl mx-auto">
-              Start building with Keystone API today. Join thousands of developers building the future of decentralized identity.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                variant="glassPrimary" 
-                size="lg"
-                className="flex items-center gap-2"
-              >
-                <Terminal className="w-5 h-5" />
-                View Full Documentation
-                <ExternalLink className="w-4 h-4" />
-              </Button>
-              <Button 
-                variant="glassLight" 
-                size="lg"
-                className="flex items-center gap-2"
-                onClick={() => window.location.href = '/api-explorer'}
-              >
-                <Code className="w-5 h-5" />
-                Try API Explorer
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <section className="w-full pt-20">
+          <h2 className="text-3xl font-bold mb-4 text-white">Ready to Integrate?</h2>
+          <p className="text-lg text-white/70 mb-8 max-w-2xl">
+            Start building with Keystone API today. Join thousands of developers building the future of decentralized identity.
+          </p>
+          <div className="flex items-center flex-col lg:flex-row w-full lg:w-1/2 gap-3">
+            <Button 
+              variant="glassPrimary" 
+              size="lg"
+              className="flex items-center gap-2 w-full"
+            >
+              <Terminal className="w-5 h-5" />
+              View Full Documentation
+              <ExternalLink className="w-4 h-4" />
+            </Button>
+            <Button 
+              variant="glassNeutral" 
+              size="lg"
+              className="flex items-center gap-2 w-full"
+              onClick={() => window.location.href = '/api-explorer'}
+            >
+              <Code className="w-5 h-5" />
+              Try API Explorer
+            </Button>
+          </div>
+        </section>
+        </div>
       </div>
     </div>
   );

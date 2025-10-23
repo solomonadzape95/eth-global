@@ -75,126 +75,134 @@ export default function APIExplorerPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20">
-      <div className="container mx-auto px-4 py-8">
+    <div className="p-0 overflow-hidden">
+      <div className="min-h-screen flex flex-col p-4 lg:p-8 items-center relative">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-            API Explorer
-          </h1>
-          <p className="text-lg text-white/80">
-            Test the Keystone API endpoints directly in your browser
-          </p>
-        </div>
+        <div className="max-w-6xl flex flex-col justify-start items-start w-full gap-10 pt-48 lg:pt-96">
+          <h1 className="text-6xl xl:text-8xl font-bold">API Explorer</h1>
+          <p className="text-lg text-white/70">Test the Keystone API endpoints directly in your browser. Build and test integrations in real-time.</p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="w-full space-y-8">
           {/* API Endpoints */}
-          <div className="space-y-6">
-            {/* Simple Status */}
-            <Card className="bg-white/5 border-white/10">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Terminal className="w-5 h-5 text-green-400" />
-                  Simple Status Check
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Badge label="GET" className="bg-green-500/20 text-green-400" />
-                  <code className="text-sm">/simple-status</code>
+          <section className="w-full">
+            <h2 className="text-3xl font-bold mb-6">Test API Endpoints</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Simple Status */}
+              <Card className="p-6 flex flex-col justify-start gap-4 h-[400px] relative overflow-hidden group">
+                <section>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Terminal className="w-6 h-6 text-green-400" />
+                    <h3 className="text-xl font-bold">Simple Status Check</h3>
+                  </div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Badge label="GET" className="bg-green-500/20 text-green-400" />
+                    <code className="text-sm text-white/60">/simple-status</code>
+                  </div>
+                  <p className="text-white/70 mb-4">
+                    Check if a user has any verified identity without requiring signature.
+                  </p>
+                </section>
+                
+                <div className="flex-1 space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-sm text-white/80">Wallet Address:</label>
+                    <input
+                      type="text"
+                      placeholder="0x1234567890abcdef1234567890abcdef12345678"
+                      className="w-full p-2 bg-white/10 border border-white/20 rounded text-white placeholder-white/50"
+                      id="simple-status-address"
+                    />
+                  </div>
+                  <Button 
+                    onClick={() => {
+                      const address = (document.getElementById('simple-status-address') as HTMLInputElement)?.value;
+                      if (address) {
+                        testAPI('/api/simple-status', { address });
+                      }
+                    }}
+                    disabled={loading}
+                    className="w-full"
+                  >
+                    <Play className="w-4 h-4 mr-2" />
+                    {loading ? 'Testing...' : 'Test Endpoint'}
+                  </Button>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-white/80">Wallet Address:</label>
-                  <input
-                    type="text"
-                    placeholder="0x1234567890abcdef1234567890abcdef12345678"
-                    className="w-full p-2 bg-white/10 border border-white/20 rounded text-white placeholder-white/50"
-                    id="simple-status-address"
-                  />
-                </div>
-                <Button 
-                  onClick={() => {
-                    const address = (document.getElementById('simple-status-address') as HTMLInputElement)?.value;
-                    if (address) {
-                      testAPI('/api/simple-status', { address });
-                    }
-                  }}
-                  disabled={loading}
-                  className="w-full"
-                >
-                  <Play className="w-4 h-4 mr-2" />
-                  {loading ? 'Testing...' : 'Test Endpoint'}
-                </Button>
-              </CardContent>
-            </Card>
+              </Card>
 
-            {/* Verifications */}
-            <Card className="bg-white/5 border-white/10">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Code className="w-5 h-5 text-blue-400" />
-                  Get All Verifications
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Badge label="GET" className="bg-blue-500/20 text-blue-400" />
-                  <code className="text-sm">/verifications</code>
+              {/* Verifications */}
+              <Card className="p-6 flex flex-col justify-start gap-4 h-[400px] relative overflow-hidden group">
+                <section>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Code className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-bold">Get All Verifications</h3>
+                  </div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Badge label="GET" className="bg-blue-500/20 text-blue-400" />
+                    <code className="text-sm text-white/60">/verifications</code>
+                  </div>
+                  <p className="text-white/70 mb-4">
+                    Retrieve all verification types for a user with consent checking.
+                  </p>
+                </section>
+                
+                <div className="flex-1 space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-sm text-white/80">Wallet Address:</label>
+                    <input
+                      type="text"
+                      placeholder="0x1234567890abcdef1234567890abcdef12345678"
+                      className="w-full p-2 bg-white/10 border border-white/20 rounded text-white placeholder-white/50"
+                      id="verifications-address"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm text-white/80">Requested By (optional):</label>
+                    <input
+                      type="text"
+                      placeholder="myapp"
+                      className="w-full p-2 bg-white/10 border border-white/20 rounded text-white placeholder-white/50"
+                      id="verifications-requestedBy"
+                    />
+                  </div>
+                  <Button 
+                    onClick={() => {
+                      const address = (document.getElementById('verifications-address') as HTMLInputElement)?.value;
+                      const requestedBy = (document.getElementById('verifications-requestedBy') as HTMLInputElement)?.value;
+                      if (address) {
+                        testAPI('/api/verifications', { address, requestedBy });
+                      }
+                    }}
+                    disabled={loading}
+                    className="w-full"
+                  >
+                    <Play className="w-4 h-4 mr-2" />
+                    {loading ? 'Testing...' : 'Test Endpoint'}
+                  </Button>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-white/80">Wallet Address:</label>
-                  <input
-                    type="text"
-                    placeholder="0x1234567890abcdef1234567890abcdef12345678"
-                    className="w-full p-2 bg-white/10 border border-white/20 rounded text-white placeholder-white/50"
-                    id="verifications-address"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-white/80">Requested By (optional):</label>
-                  <input
-                    type="text"
-                    placeholder="myapp"
-                    className="w-full p-2 bg-white/10 border border-white/20 rounded text-white placeholder-white/50"
-                    id="verifications-requestedBy"
-                  />
-                </div>
-                <Button 
-                  onClick={() => {
-                    const address = (document.getElementById('verifications-address') as HTMLInputElement)?.value;
-                    const requestedBy = (document.getElementById('verifications-requestedBy') as HTMLInputElement)?.value;
-                    if (address) {
-                      testAPI('/api/verifications', { address, requestedBy });
-                    }
-                  }}
-                  disabled={loading}
-                  className="w-full"
-                >
-                  <Play className="w-4 h-4 mr-2" />
-                  {loading ? 'Testing...' : 'Test Endpoint'}
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+              </Card>
+            </div>
+          </section>
 
           {/* Results */}
-          <div className="space-y-6">
-            <Card className="bg-white/5 border-white/10">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+          <section className="w-full">
+            <h2 className="text-3xl font-bold mb-6">API Response</h2>
+            <Card className="p-6 flex flex-col justify-start gap-4 h-[400px] relative overflow-hidden group">
+              <section>
+                <div className="flex items-center gap-2 mb-4">
                   {testResults?.status === 'error' ? (
-                    <AlertCircle className="w-5 h-5 text-red-400" />
+                    <AlertCircle className="w-6 h-6 text-red-400" />
                   ) : testResults ? (
-                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <CheckCircle className="w-6 h-6 text-green-400" />
                   ) : (
-                    <Terminal className="w-5 h-5 text-white/60" />
+                    <Terminal className="w-6 h-6 text-white/60" />
                   )}
-                  API Response
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+                  <h3 className="text-xl font-bold">Response</h3>
+                </div>
+              </section>
+              
+              <div className="flex-1 space-y-4">
                 {testResults ? (
-                  <div className="space-y-4">
+                  <>
                     <div className="flex items-center gap-2">
                       <Badge 
                         label={`Status: ${testResults.status}`} 
@@ -209,28 +217,24 @@ export default function APIExplorerPage() {
                       <label className="text-sm text-white/80">Response:</label>
                       <CodeBlock id="response-data">{JSON.stringify(testResults.data, null, 2)}</CodeBlock>
                     </div>
-                  </div>
+                  </>
                 ) : (
                   <div className="text-center py-8 text-white/60">
                     <Terminal className="w-12 h-12 mx-auto mb-4 opacity-50" />
                     <p>Select an endpoint and click "Test Endpoint" to see results</p>
                   </div>
                 )}
-              </CardContent>
+              </div>
             </Card>
+          </section>
 
-            {/* Code Examples */}
-            <Card className="bg-white/5 border-white/10">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Code className="w-5 h-5 text-purple-400" />
-                  Code Examples
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <h4 className="font-semibold text-white mb-2">JavaScript/TypeScript</h4>
-                  <CodeBlock id="js-example">
+          {/* Code Examples */}
+          <section className="w-full">
+            <h2 className="text-3xl font-bold mb-6">Code Examples</h2>
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-xl font-bold mb-4 text-white">JavaScript/TypeScript</h3>
+                <CodeBlock id="js-example">
 {`// Check if user is verified
 async function checkUserVerification(walletAddress) {
   try {
@@ -258,11 +262,11 @@ async function getUserVerifications(walletAddress, appId) {
     return [];
   }
 }`}
-                  </CodeBlock>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-2">React Hook</h4>
-                  <CodeBlock id="react-example">
+                </CodeBlock>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-4 text-white">React Hook</h3>
+                <CodeBlock id="react-example">
 {`import { useState, useEffect } from 'react';
 
 function useVerificationStatus(walletAddress) {
@@ -291,34 +295,32 @@ function useVerificationStatus(walletAddress) {
 
   return { isVerified, loading };
 }`}
-                  </CodeBlock>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                </CodeBlock>
+              </div>
+            </div>
+          </section>
         </div>
 
         {/* CTA */}
-        <Card className="mt-8 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-purple-500/30">
-          <CardContent className="text-center py-6">
-            <h2 className="text-xl font-bold mb-2 text-white">Ready to Integrate?</h2>
-            <p className="text-white/80 mb-4">
-              Start building with Keystone API today
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                variant="glassPrimary" 
-                size="lg"
-                className="flex items-center gap-2"
-                onClick={() => window.location.href = '/docs'}
-              >
-                <Code className="w-5 h-5" />
-                View Full Documentation
-                <ExternalLink className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <section className="w-full pt-20">
+          <h2 className="text-3xl font-bold mb-4 text-white">Ready to Integrate?</h2>
+          <p className="text-lg text-white/70 mb-8 max-w-2xl">
+            Start building with Keystone API today. Join thousands of developers building the future of decentralized identity.
+          </p>
+          <div className="flex items-center flex-col lg:flex-row w-full lg:w-1/2 gap-3">
+            <Button 
+              variant="glassPrimary" 
+              size="lg"
+              className="flex items-center gap-2 w-full"
+              onClick={() => window.location.href = '/docs'}
+            >
+              <Code className="w-5 h-5" />
+              View Full Documentation
+              <ExternalLink className="w-4 h-4" />
+            </Button>
+          </div>
+        </section>
+        </div>
       </div>
     </div>
   );
