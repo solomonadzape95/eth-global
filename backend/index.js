@@ -299,6 +299,7 @@ app.get('/verifications', async (req, res) => {
                   cid: cid,
                   verified_at: verificationData.verified_at,
                   consented: true,
+                  baseTxHash: verificationData.baseTxHash || verificationData.transactionHash,
                   ...verificationData
                 });
               } catch (ipfsError) {
@@ -308,6 +309,7 @@ app.get('/verifications', async (req, res) => {
                   is_verified: true,
                   cid: cid,
                   consented: true,
+                  baseTxHash: 'N/A',
                   error: 'Could not fetch verification details'
                 });
               }
@@ -430,7 +432,7 @@ app.get('/check-status', async (req, res) => {
       console.log(`[API] No record found for ${walletAddress}`);
       return res.json({ isVerified: false, message: 'No attestation found' });
     }
-
+    
     const cid = await readOnlyContract.getLatestAttestation(walletAddress);
     console.log(`[API] Found valid attestation for ${walletAddress}. CID: ${cid}`);
     
