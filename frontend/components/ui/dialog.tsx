@@ -57,7 +57,7 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
       />
       
       {/* Dialog Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-4">
+      <div className="relative z-10  flex justify-center items-center">
         {children}
       </div>
     </div>

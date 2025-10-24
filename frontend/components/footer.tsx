@@ -77,7 +77,12 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/60">
-           <p>© {new Date().getFullYear()} Keystone. All rights reserved.</p>
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+            <p>© {new Date().getFullYear()} Keystone. All rights reserved.</p>
+            <p className="text-white/50">
+              Design by <a href="https://x.com/neesay09" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">Nee Say</a>
+            </p>
+          </div>
           <div className="flex items-center gap-4 text-white/70">
             <a aria-label="GitHub" href="#" className="hover:text-white"><Github className="w-5 h-5" /></a>
             <a aria-label="LinkedIn" href="#" className="hover:text-white"><Linkedin className="w-5 h-5" /></a>
