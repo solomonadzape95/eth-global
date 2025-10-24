@@ -221,7 +221,7 @@ export default function APIExplorerPage() {
                 ) : (
                   <div className="text-center py-8 text-white/60">
                     <Terminal className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                    <p>Select an endpoint and click "Test Endpoint" to see results</p>
+                     <p>Select an endpoint and click &quot;Test Endpoint&quot; to see results</p>
                   </div>
                 )}
               </div>

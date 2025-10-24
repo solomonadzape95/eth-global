@@ -101,7 +101,6 @@ export default function DemoPage() {
                   <Button 
                     onClick={checkSimpleStatus}
                     disabled={loading}
-                    variant="outline"
                   >
                     {loading ? "Checking..." : "Check Simple Status"}
                   </Button>
@@ -109,7 +108,6 @@ export default function DemoPage() {
                   <Button 
                     onClick={checkUserVerifications}
                     disabled={loading}
-                    variant="outline"
                   >
                     {loading ? "Fetching..." : "Get All Verifications"}
                   </Button>
@@ -134,7 +132,7 @@ export default function DemoPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-2">
-                    <Badge label={simpleStatus.isVerified ? "Verified" : "Not Verified"} />
+                    <Badge label={simpleStatus.is_verified ? "Verified" : "Not Verified"} />
                     {simpleStatus.cid && (
                       <span className="text-sm text-gray-500">CID: {simpleStatus.cid}</span>
                     )}

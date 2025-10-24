@@ -70,7 +70,7 @@ export default function DashboardLayout({
       <header className={cn("fixed top-0 inset-x-0 z-40 bg-black/40 md:bg-transparent backdrop-blur-lg", scrollDirection === "down" ? "-translate-y-full" : "translate-y-0")}>
         <div className="mx-auto max-w-6xl px-6 lg:px-0 py-2 lg:py-8">
           <div className="h-16 flex items-center justify-between">
-            <a href="/" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <span
                 className={cn(
                   "w-9 h-9 rounded-[7px] border border-white/10 p-1",
@@ -81,7 +81,7 @@ export default function DashboardLayout({
               >
                 <Image src={logo} width={100} height={100} alt="logo" />
               </span>
-            </a>
+            </Link>
 
             <nav className="hidden md:flex">
               <div
