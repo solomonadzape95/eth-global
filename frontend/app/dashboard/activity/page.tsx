@@ -50,12 +50,57 @@ export default function Activity() {
 
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:3001/activity?address=${address}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch activities');
+        
+        // Try to fetch from backend API first
+        try {
+          const response = await fetch(`/api/activity?address=${address}`);
+          if (response.ok) {
+            const data: ActivityResponse = await response.json();
+            setActivities(data.activities);
+            setLoading(false);
+            return;
+          }
+        } catch (apiError) {
+          console.warn('Backend API not available, using mock data:', apiError);
         }
-        const data: ActivityResponse = await response.json();
-        setActivities(data.activities);
+
+        // Fallback to mock data if API is not available
+        const mockActivity: ActivityItem[] = [
+          {
+            id: '1',
+            type: 'verification_added',
+            timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+            description: 'Added student verification',
+            verificationType: 'student',
+            status: 'completed'
+          },
+          {
+            id: '2',
+            type: 'third_party_request',
+            timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
+            description: 'Third-party app requested verification data',
+            appName: 'DeFi App',
+            status: 'granted'
+          },
+          {
+            id: '3',
+            type: 'verification_added',
+            timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(), // 30 minutes ago
+            description: 'Added identity verification',
+            verificationType: 'identity-verification',
+            status: 'completed'
+          },
+          {
+            id: '4',
+            type: 'third_party_request',
+            timestamp: new Date(Date.now() - 15 * 60 * 1000).toISOString(), // 15 minutes ago
+            description: 'Employment verification requested',
+            appName: 'Job Portal',
+            status: 'denied'
+          }
+        ];
+        
+        setActivities(mockActivity);
       } catch (err) {
         console.error('Error fetching activities:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch activities');
@@ -124,6 +169,12 @@ export default function Activity() {
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">Activity</h1>
           <p className="text-white/60">Track every time your identity was used or requested</p>
+          <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+            <p className="text-blue-400 text-sm font-medium">
+              📊 <strong>Demo Notice:</strong> Activity data shown is for demonstration purposes only. 
+              This shows how the system would track identity usage and third-party requests.
+            </p>
+          </div>
         </div>
 
         {/* Search and Filter Bar */}

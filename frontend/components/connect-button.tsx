@@ -2,7 +2,7 @@
 import { Button } from "./ui/button";
 import { useAccount, useBalance } from "wagmi";
 import { modal } from "@/context/provider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 // Explicitly define the allowed variants that Button accepts
@@ -35,11 +35,17 @@ export default function ConnectButton({
   });
   const [isConnecting, setIsConnecting] = useState(false);
 
+
+  useEffect(() => {
+    if (isConnected) {
+      router.replace("/dashboard/verifications");
+    }
+  }, [isConnected, router]);
+  
   const handleConnect = async () => {    
     setIsConnecting(true);
     try {
       await modal.open();
-      if(isConnected) router.replace("/dashboard/verifications")
     } catch (e) {
       console.error("Wallet modal failed to open", e);
     } finally {
@@ -49,7 +55,7 @@ export default function ConnectButton({
   };
 
   const formatAddress = (addr: string) => {
-    return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+    return addr ? `${addr.slice(0, 6)}...${addr.slice(-4)}` : "";
   };
 
   const formatBalance = (balance: bigint | undefined, decimals: number | undefined) => {
