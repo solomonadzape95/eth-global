@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { useAccount, useBalance } from "wagmi";
 import { modal } from "@/context/provider";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 // Explicitly define the allowed variants that Button accepts
 type ButtonVariant =
@@ -28,6 +29,7 @@ export default function ConnectButton({
   onClick = null,
 }: ConnectButtonProps) {
   const { isConnected, address } = useAccount();
+  const router = useRouter()
   const { data: balance } = useBalance({
     address: address,
   });
@@ -37,6 +39,7 @@ export default function ConnectButton({
     setIsConnecting(true);
     try {
       await modal.open();
+      if(isConnected) router.replace("/dashboard/verifications")
     } catch (e) {
       console.error("Wallet modal failed to open", e);
     } finally {
