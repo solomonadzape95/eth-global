@@ -91,9 +91,8 @@ export function ConsentManager({ onConsentChange }: ConsentManagerProps) {
               <div className="flex items-center gap-2">
                 <verification.icon className="h-5 w-5" />
                 <h3 className="font-medium">{verification.title}</h3>
-                <Badge variant={consents[verification.id] ? "default" : "secondary"}>
-                  {consents[verification.id] ? "Shared" : "Private"}
-                </Badge>
+                <Badge label={consents[verification.id] ? "Shared" : "Private"}/>
+             
               </div>
               <p className="text-sm text-gray-600 mt-1">{verification.description}</p>
             </div>

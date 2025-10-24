@@ -94,7 +94,7 @@ console.log('User verified:', isVerified);`}
                 <div>
                   <span className="text-white/60 text-sm">Parameters:</span>
                   <ul className="ml-4 text-white/80 text-sm">
-                    <li>• address (required): User's wallet address</li>
+                     <li>• address (required): User&apos;s wallet address</li>
                   </ul>
                 </div>
                 <div>
@@ -128,7 +128,7 @@ console.log('User verified:', isVerified);`}
                 <div>
                   <span className="text-white/60 text-sm">Parameters:</span>
                   <ul className="ml-4 text-white/80 text-sm">
-                    <li>• address (required): User's wallet address</li>
+                     <li>• address (required): User&apos;s wallet address</li>
                     <li>• requestedBy (optional): Your app identifier</li>
                   </ul>
                 </div>
