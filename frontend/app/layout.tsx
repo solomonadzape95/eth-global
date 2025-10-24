@@ -8,7 +8,7 @@ const myFont = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "ethglobal-project",
+  title: "Keystone",
   description: "Verify once, Login anywhere",
 };
 

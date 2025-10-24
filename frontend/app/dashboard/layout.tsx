@@ -26,13 +26,14 @@ export default function DashboardLayout({
   const [open, setOpen] = React.useState(false);
   const scrollDirection = useNavbarHide()
   const router = useRouter()
-  const {isConnected} = useAccount()
+  const {isConnected, isConnecting} = useAccount()
 
   React.useEffect(() => {
-    if (!isConnected) {
+    // Only redirect if not connected and not currently connecting
+    if (!isConnected && !isConnecting) {
       router.replace("/");
     }
-  }, [isConnected, router]);
+  }, [isConnected, isConnecting, router]);
 
   React.useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {

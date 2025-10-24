@@ -162,11 +162,11 @@ async function addVerification(walletAddress, verificationType, verificationData
       }
     }
     
-    // 2. Update composite document
+    // 2. Update composite document (we'll add txHash after blockchain transaction)
     existingData.verifications[verificationType] = verificationData;
     existingData.last_updated = new Date().toISOString();
     
-    // 3. Upload updated composite document with retry logic
+    // 3. Upload initial composite document with retry logic
     let newCid;
     try {
       newCid = await uploadToIPFS(existingData);
@@ -206,6 +206,16 @@ async function addVerification(walletAddress, verificationType, verificationData
       }
     }
     
+    // 5. Add transaction hash to verification data and re-upload to IPFS
+    existingData.verifications[verificationType].baseTxHash = tx.hash;
+    existingData.last_updated = new Date().toISOString();
+    
+    try {
+      newCid = await uploadToIPFS(existingData);
+    } catch (error) {
+      console.warn('Failed to re-upload with txHash, but transaction was successful:', error);
+    }
+    
     return {
       cid: newCid,
       txHash: tx.hash,
@@ -240,6 +250,9 @@ app.post('/verify', async (req, res) => {
     console.log(`[4/4] Updated composite document. CID: ${result.cid}`);
 
     console.log(`✅ SUCCESS! Verification complete for ${walletAddress}. TxHash: ${result.txHash}`);
+    
+    // Log activity for verification creation
+    console.log(`[ACTIVITY] User ${walletAddress} added ${verificationType} verification at ${req.activityInfo.timestamp}`);
     
     res.status(200).json({
       success: true,
@@ -276,57 +289,54 @@ app.get('/verifications', async (req, res) => {
 
     for (const verificationType of verificationTypes) {
       try {
-        // Check if user has consented to share this verification type
-        const hasConsented = await readOnlyContract.hasConsented(address, verificationType);
+        // Get the CID for this verification type
+        const cid = await readOnlyContract.getUserAttestation(address, verificationType);
         
-        if (hasConsented) {
-          // Get the CID for this verification type
-          const cid = await readOnlyContract.getUserAttestation(address, verificationType);
+        if (cid && cid.length > 0) {
+          // Check if not revoked
+          const isRevoked = await readOnlyContract.isRevoked(cid);
           
-          if (cid && cid.length > 0) {
-            // Check if not revoked
-            const isRevoked = await readOnlyContract.isRevoked(cid);
+          if (!isRevoked) {
+            // Check consent status (for information only)
+            const hasConsented = await readOnlyContract.hasConsented(address, verificationType);
             
-            if (!isRevoked) {
-              // Fetch verification data from IPFS
-              try {
-                const compositeData = await fetchFromIPFS(cid);
-                const verificationData = compositeData.verifications[verificationType];
-                
-                verifications.push({
-                  verification_type: verificationType,
-                  is_verified: true,
-                  cid: cid,
-                  verified_at: verificationData.verified_at,
-                  consented: true,
-                  baseTxHash: verificationData.baseTxHash || verificationData.transactionHash,
-                  ...verificationData
-                });
-              } catch (ipfsError) {
-                console.warn(`Could not fetch IPFS data for ${verificationType}:`, ipfsError);
-                verifications.push({
-                  verification_type: verificationType,
-                  is_verified: true,
-                  cid: cid,
-                  consented: true,
-                  baseTxHash: 'N/A',
-                  error: 'Could not fetch verification details'
-                });
-              }
+            // Fetch verification data from IPFS
+            try {
+              const compositeData = await fetchFromIPFS(cid);
+              const verificationData = compositeData.verifications[verificationType];
+              
+              verifications.push({
+                verification_type: verificationType,
+                is_verified: true,
+                cid: cid,
+                verified_at: verificationData.verified_at,
+                consented: hasConsented,
+                baseTxHash: verificationData.baseTxHash || verificationData.transactionHash,
+                ...verificationData
+              });
+            } catch (ipfsError) {
+              console.warn(`Could not fetch IPFS data for ${verificationType}:`, ipfsError);
+              verifications.push({
+                verification_type: verificationType,
+                is_verified: true,
+                cid: cid,
+                consented: hasConsented,
+                baseTxHash: 'N/A',
+                error: 'Could not fetch verification details'
+              });
             }
           }
-        } else {
-          // User has not consented to share this verification
-          verifications.push({
-            verification_type: verificationType,
-            is_verified: true,
-            consented: false,
-            message: 'User has not consented to share this verification'
-          });
         }
       } catch (error) {
         console.warn(`Error processing verification type ${verificationType}:`, error);
       }
+    }
+
+    // Log activity for third-party requests
+    if (requestedBy && requestedBy !== 'keystone') {
+      console.log(`[ACTIVITY] Third-party request from ${requestedBy} for ${address} at ${req.activityInfo.timestamp}`);
+      // In a real app, you'd store this in a database
+      // For now, we'll just log it
     }
 
     res.json({
@@ -478,6 +488,74 @@ app.use((error, req, res, next) => {
   }
 });
 
+// GET /activity - Get user activity (for demo purposes, returns mock data)
+app.get('/activity', async (req, res) => {
+  try {
+    const { address } = req.query;
+    if (!address) {
+      return res.status(400).json({ error: 'address parameter is required' });
+    }
+
+    // In a real app, this would query a database
+    // For demo purposes, we'll return mock activity data
+    const mockActivity = [
+      {
+        id: '1',
+        type: 'verification_added',
+        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+        description: 'Added student verification',
+        verificationType: 'student',
+        status: 'completed'
+      },
+      {
+        id: '2',
+        type: 'third_party_request',
+        timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
+        description: 'Third-party app requested verification data',
+        appName: 'DeFi App',
+        status: 'granted'
+      },
+      {
+        id: '3',
+        type: 'verification_added',
+        timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(), // 30 minutes ago
+        description: 'Added identity verification',
+        verificationType: 'identity-verification',
+        status: 'completed'
+      }
+    ];
+
+    res.json({
+      walletAddress: address,
+      activities: mockActivity,
+      total: mockActivity.length
+    });
+
+  } catch (error) {
+    console.error("Get activity failed:", error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Activity tracking middleware
+app.use((req, res, next) => {
+  // Track API requests for activity logging
+  const timestamp = new Date().toISOString();
+  const userAgent = req.get('User-Agent') || 'Unknown';
+  const ip = req.ip || req.connection.remoteAddress;
+  
+  // Store request info for activity tracking
+  req.activityInfo = {
+    timestamp,
+    userAgent,
+    ip,
+    endpoint: req.path,
+    method: req.method
+  };
+  
+  next();
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ 
@@ -497,4 +575,5 @@ app.listen(PORT, () => {
   console.log(`  GET /verifications?address=0x... - Get user verifications with consent`);
   console.log(`  GET /simple-status?address=0x... - Simple status check`);
   console.log(`  GET /check-status?address=0x...&signature=0x... - Status check with signature`);
+  console.log(`  GET /activity?address=0x... - Get user activity log`);
 });

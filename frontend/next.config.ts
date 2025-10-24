@@ -29,9 +29,9 @@ const nextConfig: NextConfig = {
     return config;
   },
   transpilePackages: ['@noble/hashes', '@noble/curves', 'viem'],
-  experimental: {
-    esmExternals: false,
-  },
+  // experimental: {
+  //   esmExternals: false,
+  // },
 };
 
 export default nextConfig;

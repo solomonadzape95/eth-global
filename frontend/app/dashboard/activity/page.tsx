@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAccount } from "wagmi";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -11,74 +12,65 @@ import {
   Shield,
   Clock,
   Search,
-  Filter
+  Filter,
+  Loader2
 } from "lucide-react";
 
-const activityData = [
-  {
-    id: "1",
-    who: "https://www.google.com/search?q=CryptoService.com",
-    what: "Asked to confirm: Age Over 18",
-    when: "Today at 9:01 PM",
-    status: "approved",
-    timestamp: new Date("2024-01-15T21:01:00"),
-    dataRequested: ["Age verification", "Location (Country)"]
-  },
-  {
-    id: "2", 
-    who: "https://app.uniswap.org",
-    what: "Requested: Government ID verification",
-    when: "Yesterday at 2:30 PM",
-    status: "approved",
-    timestamp: new Date("2024-01-14T14:30:00"),
-    dataRequested: ["Government ID", "Full name", "Date of birth"]
-  },
-  {
-    id: "3",
-    who: "https://opensea.io",
-    what: "Asked to confirm: Identity verification",
-    when: "2 days ago at 11:45 AM", 
-    status: "denied",
-    timestamp: new Date("2024-01-13T11:45:00"),
-    dataRequested: ["Selfie verification", "Government ID"]
-  },
-  {
-    id: "4",
-    who: "https://www.coinbase.com",
-    what: "Requested: KYC verification",
-    when: "3 days ago at 4:20 PM",
-    status: "approved", 
-    timestamp: new Date("2024-01-12T16:20:00"),
-    dataRequested: ["Government ID", "Proof of address", "Selfie verification"]
-  },
-  {
-    id: "5",
-    who: "https://app.aave.com",
-    what: "Asked to confirm: Age and location",
-    when: "1 week ago at 8:15 AM",
-    status: "approved",
-    timestamp: new Date("2024-01-08T08:15:00"),
-    dataRequested: ["Age verification", "Location (Country)", "Basic identity"]
-  },
-  {
-    id: "6",
-    who: "https://www.binance.com",
-    what: "Requested: Full identity verification",
-    when: "2 weeks ago at 3:10 PM",
-    status: "pending",
-    timestamp: new Date("2024-01-01T15:10:00"),
-    dataRequested: ["Government ID", "Proof of address", "Selfie verification", "Employment verification"]
-  }
-];
+interface ActivityItem {
+  id: string;
+  type: 'verification_added' | 'third_party_request';
+  timestamp: string;
+  description: string;
+  verificationType?: string;
+  appName?: string;
+  status: 'completed' | 'granted' | 'denied' | 'pending';
+}
+
+interface ActivityResponse {
+  walletAddress: string;
+  activities: ActivityItem[];
+  total: number;
+}
 
 export default function Activity() {
+  const { address, isConnected } = useAccount();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [activities, setActivities] = useState<ActivityItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredActivities = activityData.filter(activity => {
-    const matchesSearch = activity.who.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         activity.what.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         activity.dataRequested.some(data => data.toLowerCase().includes(searchQuery.toLowerCase()));
+  // Fetch activities from API
+  useEffect(() => {
+    const fetchActivities = async () => {
+      if (!address || !isConnected) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const response = await fetch(`http://localhost:3001/activity?address=${address}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch activities');
+        }
+        const data: ActivityResponse = await response.json();
+        setActivities(data.activities);
+      } catch (err) {
+        console.error('Error fetching activities:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch activities');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActivities();
+  }, [address, isConnected]);
+
+  const filteredActivities = activities.filter(activity => {
+    const matchesSearch = activity.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         (activity.appName && activity.appName.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                         (activity.verificationType && activity.verificationType.toLowerCase().includes(searchQuery.toLowerCase()));
     
     const matchesStatus = statusFilter === "all" || activity.status === statusFilter;
     
@@ -87,8 +79,9 @@ export default function Activity() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "approved":
-        return <Badge label="approved" />;
+      case "completed":
+      case "granted":
+        return <Badge label="completed" />;
       case "denied":
         return <Badge label="denied" />;
       case "pending":
@@ -100,7 +93,8 @@ export default function Activity() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "approved":
+      case "completed":
+      case "granted":
         return "text-green-400";
       case "denied":
         return "text-red-400";
@@ -111,7 +105,8 @@ export default function Activity() {
     }
   };
 
-  const formatRelativeTime = (date: Date) => {
+  const formatRelativeTime = (dateString: string) => {
+    const date = new Date(dateString);
     const now = new Date();
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
     
@@ -162,85 +157,102 @@ export default function Activity() {
           </div>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-white/60" />
+            <span className="ml-2 text-white/60">Loading activities...</span>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="text-center py-12">
+            <div className="text-red-400 mb-2">Error loading activities</div>
+            <p className="text-white/60">{error}</p>
+          </div>
+        )}
+
         {/* Activity List */}
-        <div className="space-y-4">
-          {filteredActivities.map((activity) => (
-            <Card
-              key={activity.id}
-              className="bg-gradient-to-b from-white/10 to-white/5 border-white/10 backdrop-blur-md hover:from-white/15 hover:to-white/10 transition-all duration-300"
-            >
-              <CardHeader className="pb-4">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-start gap-3 mb-3">
-                      <div className="p-2 bg-white/10 rounded-lg">
-                        <Shield className="w-5 h-5 text-white/80" />
-                      </div>
-                      <div className="flex-1">
-                        <CardTitle className="text-white text-lg font-semibold mb-1">
-                          {activity.what}
-                        </CardTitle>
-                        <div className="flex items-center gap-2 text-white/60 text-sm">
-                          <ExternalLink className="w-4 h-4" />
-                          <span className="truncate">{activity.who}</span>
+        {!loading && !error && (
+          <div className="space-y-4">
+            {filteredActivities.map((activity) => (
+              <Card
+                key={activity.id}
+                className="bg-gradient-to-b from-white/10 to-white/5 border-white/10 backdrop-blur-md hover:from-white/15 hover:to-white/10 transition-all duration-300"
+              >
+                <CardHeader className="pb-4">
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-start gap-3 mb-3">
+                        <div className="p-2 bg-white/10 rounded-lg">
+                          <Shield className="w-5 h-5 text-white/80" />
+                        </div>
+                        <div className="flex-1">
+                          <CardTitle className="text-white text-lg font-semibold mb-1">
+                            {activity.description}
+                          </CardTitle>
+                          {activity.appName && (
+                            <div className="flex items-center gap-2 text-white/60 text-sm">
+                              <ExternalLink className="w-4 h-4" />
+                              <span className="truncate">{activity.appName}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
+                      
+                      {activity.verificationType && (
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          <span className="px-2 py-1 bg-white/5 text-white/70 text-xs rounded border border-white/10">
+                            {activity.verificationType.replace('-', ' ').toUpperCase()}
+                          </span>
+                        </div>
+                      )}
                     </div>
                     
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {activity.dataRequested.map((data, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 bg-white/5 text-white/70 text-xs rounded border border-white/10"
-                        >
-                          {data}
-                        </span>
-                      ))}
+                    <div className="flex flex-col items-end gap-2">
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-white/40" />
+                        <span className="text-white/60 text-sm">{formatRelativeTime(activity.timestamp)}</span>
+                      </div>
+                      <div className={cn("text-sm font-medium", getStatusColor(activity.status))}>
+                        {getStatusBadge(activity.status)}
+                      </div>
                     </div>
                   </div>
-                  
-                  <div className="flex flex-col items-end gap-2">
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-white/40" />
-                      <span className="text-white/60 text-sm">{activity.when}</span>
+                </CardHeader>
+                
+                <CardContent className="pt-0">
+                  <div className="flex items-center justify-between text-xs text-white/40">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        <User className="w-3 h-3" />
+                        <span>{activity.type === 'verification_added' ? 'Verification Added' : 'Third-party Request'}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        <span>{formatRelativeTime(activity.timestamp)}</span>
+                      </div>
                     </div>
-                    <div className={cn("text-sm font-medium", getStatusColor(activity.status))}>
-                      {getStatusBadge(activity.status)}
-                    </div>
-                  </div>
-                </div>
-              </CardHeader>
-              
-              <CardContent className="pt-0">
-                <div className="flex items-center justify-between text-xs text-white/40">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-1">
-                      <User className="w-3 h-3" />
-                      <span>Identity Request</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
-                      <span>{formatRelativeTime(activity.timestamp)}</span>
+                    <div className="text-right">
+                      <div>Activity ID: {activity.id}</div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div>Request ID: {activity.id}</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
         {/* Empty State */}
-        {filteredActivities.length === 0 && (
+        {!loading && !error && filteredActivities.length === 0 && (
           <div className="text-center py-12">
             <Filter className="w-16 h-16 text-white/20 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-white mb-2">No activity found</h3>
             <p className="text-white/60">
               {searchQuery || statusFilter !== "all" 
                 ? "Try adjusting your search terms or filters" 
-                : "No identity requests have been made yet"}
+                : "No activity has been recorded yet"}
             </p>
           </div>
         )}

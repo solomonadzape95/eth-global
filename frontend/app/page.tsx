@@ -12,14 +12,15 @@ import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
 
 export default function Home() {
-  const {isConnected} = useAccount()
+  const {isConnected, isConnecting} = useAccount()
   const router = useRouter()
 
   useEffect(() => {
-    if(isConnected) {
+    // Only redirect if connected and not currently connecting
+    if(isConnected && !isConnecting) {
       router.push("/dashboard")
     }
-  }, [isConnected, router])
+  }, [isConnected, isConnecting, router])
   return (
   <div className="p-0 overflow-hidden">
     <div className="min-h-screen flex flex-col p-4 lg:p-8 items-center  relative">
